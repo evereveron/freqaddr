@@ -3,9 +3,14 @@ make a node
   iterate through LL to see if already exists
   keep track of line number
   first node set as head
+    
+  
+
 
 in struct:
   size_t hex
   freq
   line_num
   next
+
+
