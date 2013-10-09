@@ -116,11 +116,11 @@ int printList(int numPrint, LLNode *head){
   while(temp!=NULL){
     
     if(numPrint == 0){ 
-      printf("0x%zx: %d\n", temp->hex, temp->freq);
+      printf("0x%lx: %d\n", temp->hex, temp->freq);
     }
     else{
       if(count < numPrint){
-        printf("0x%zx: %d\n", temp->hex, temp->freq);
+        printf("0x%lx: %d\n", temp->hex, temp->freq);
       }
       else
         break;
@@ -136,7 +136,7 @@ int printList(int numPrint, LLNode *head){
 int main(int argc, char* argv[]){
 	
 	
-	size_t num;
+	unsigned long num;
 	FILE *fp;
 
 	int numPrint = strtol(argv[2], NULL, 10);
@@ -190,7 +190,7 @@ int main(int argc, char* argv[]){
      * then add to or create a linked list
     */
 
-		while(fscanf(fp, "%zx", &num) != EOF){
+		while(fscanf(fp, "%lx", &num) != EOF){
 			
 
 			/*the inner while loop iterates through the linked list
@@ -225,7 +225,6 @@ int main(int argc, char* argv[]){
 					frequency++;
 					temp->freq = frequency;
 					
-					printf("freq: %zx: %d\n", temp->hex, temp->freq);
 					break;
 				}
 
