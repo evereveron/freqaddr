@@ -9,154 +9,93 @@
 int list_size = 0;
 
 
-int badSort(LLNode *head, LLNode *nHead){
+LLNode* badSort(LLNode *head, LLNode *nHead){
 	//performs selection sort on a linked list
-	
-	if(head == NULL){
-		return NULL;
-	}
+  
+  if(head == NULL){
+    return 0;
 
-	LLNode *temp;
-		temp = head;
-		
-	LLNode *temp2;
-		temp2 = NULL;
-	LLNode *maxNode;
-		maxNode = NULL;
-	LLNode *maxPrev;
-		maxPrev = NULL;
-		
-	//current in new list being built
-	LLNode *current;
-		current = NULL;
-	
-	int lSize = list_size;
-	
-	//sets variable to hold max
-	
-	
-	int i;
-	while(temp != NULL){
+  }
+  
+  LLNode *current;
+    current = NULL;
+  LLNode *insert;
+    insert = NULL;
+  
+  LLNode *temp;
+    temp = head;
+  LLNode *maxNode;
+    maxNode = NULL;
 
-		printf("1\n");
-		printf("temp is %zx.\n", temp->hex);
-		//resets variable to hold max
-		int maxFreq = 0;
-		
-		temp2 = head;
-		while(temp2 != NULL){
-			printf("2\n");
-			if(temp2->next != NULL && temp2->next->freq > maxFreq){
-				maxFreq = temp2->next->freq;
-				maxNode = temp2->next;
-				maxPrev = temp2;
-			}
-			temp2 = temp2->next;
-		}
-		printf("3\n");
-		printf("max is %zx with %d.\n", maxNode->hex, maxFreq);
-		//adds max to new linked list.
-		//if no list exists, create one.
-		if(nHead->hex == NULL){
-			printf("4\n");
-			nHead = maxNode;
-			nHead->next = NULL;
-			current = nHead;
-			printf("4.5\n");
-		}
-		//new list does exist.
-		//add to end of new list.
-		//delete max node from old list.
-		printf("5\n");
-		else{
-			printf("6\n");
-			current->next = maxNode;
-			maxPrev->next = maxPrev->next->next;
-			current = maxNode;
-		}
-		printf("7\n");
-		if(temp->next == NULL){
-			printf("8\n");
-			current->next = temp;
-			break;
-		}
-		temp = head;
-	}
-	return 0;
-}
+  int maxFreq = 0;
+  int size = 0;
+
+  while(size!= list_size){
+    
+    //finds max frequency
+    while(temp != NULL){
+      
+      printf("temp is %zx, maxfreq is %d. tempfreq is %d, and skip is %d.\n", temp->hex, maxFreq, temp->freq, temp->skip);
 
 
-int listSort(LLNode *head){
-	//performs insertion sort on a linked list
-	
-	if(head==NULL){
-		return 1;
-	}
-	
-	LLNode *current;
-	LLNode *temp;
-	LLNode *insert;
-	current = head;
-	temp = head;
-	insert = NULL;
-	
-	//sets up freq to compare to
-	//is this necessary??
-	int max = 0;
-	
-	//special case if linked list is only 1 node long
-	if(head->next ==NULL){
-		printf("1\n");
-		return 0;
-	}
-	
-	//check if head->next->freq is greater first
-	if(head->next->freq > head->freq){
-		printf("2\n");
-		insert = head->next;
-		//printf("insert is %zx\n", insert->hex);
-		head->next = head->next->next;
-			/*if(head->next ==NULL){
-				printf("head->next is null.");
-			}else{
-			printf("head->next is %zx\n", head->next->hex);
-			}
-			*/
-		head = head->next;
-		//printf("head is %zx\n", head->hex);
-	}
-	
-	/*
-	int atHead = 0;
-	while(current!= NULL){
-		printf("0x%zx: %d\n", temp->hex, temp->freq);
-		int cfreq = current->next->freq;
-		while(temp!=NULL){
-			
-			//should work even if there exists word with same frequency
-			if(temp->freq > cfreq){
-				insert = current->next;
-				if(atHead=0){
-					current->next = current->next->next;
-					insert->next = head;
-					head = insert;
-					temp = head;
-					//atHead++ not necessary since breaking
-					break;
-				}
-				
-				
-			}
-			athead++;
-			temp = temp->next;
-		}
-		
-		
-		
-		current = current->next;
-	}
-	*/
-	return 0;
+      if(temp->freq > maxFreq && temp->skip != 1){
+        maxNode = temp;
+        maxFreq = temp->freq;
+     }
+
+      temp = temp->next;
+
+
+      
+    }
+
+    maxNode->skip = 1;
+   // printf("maxNode is %zx. skip is %d.\n", maxNode->hex, maxNode->skip); 
+    
+
+    //add new node
+
+    //no list exists yet
+    if(nHead->freq == 0){
+      insert = (LLNode*)malloc(sizeof(LLNode));
+        insert->freq = maxNode->freq;
+        insert->hex = maxNode->hex;
+        insert->line_num = maxNode->line_num;
+        insert->next = NULL;
+
+      size++;
+
+      nHead = insert;
+       // printf("nHead is %zx: %d.\n", nHead->hex, nHead->freq);
+      current = nHead;
+    }
+
+    //list already exists
+    else{
+      insert  = (LLNode*)malloc(sizeof(LLNode));
+        insert->freq = maxNode->freq;
+        insert->hex = maxNode->hex;
+        insert->line_num = maxNode->line_num;
+        insert->next = NULL;
+
+      size++;
+
+       // printf("insert is %zx: %d.\n", insert->hex, insert->freq);
+
+      current->next = insert;
+      current = insert;
+    }
+
+  }
+
+  temp = nHead;
+  while(temp != NULL){
+    printf("%zx: %d.\n", temp->hex, temp->freq);
+    temp = temp->next;
+  }
+
+
+  return nHead;
 }
 
 int main(int argc, char* argv[]){
@@ -204,6 +143,7 @@ int main(int argc, char* argv[]){
 			//the inner while loop iterates through the linked list
 			//and checks for repeats
 			while(temp != NULL){
+
 				//printf("3\n");
 				//if there is no root, create new linked list
 				if(root == NULL){
@@ -214,6 +154,7 @@ int main(int argc, char* argv[]){
 					root->freq = 1;
 					root->line_num = line;
 					root->next = NULL;
+          root->skip = 0;
 					
 					current = root;
 					temp = root;
@@ -245,6 +186,7 @@ int main(int argc, char* argv[]){
 					newNode->hex = num;
 					newNode->freq = 1;
 					newNode->line_num = line;
+          newNode->skip = 0;
 					newNode->next = NULL;
 					
 					current->next = newNode;
@@ -274,9 +216,9 @@ int main(int argc, char* argv[]){
 	temp = root;
 	LLNode *output;
 		output = (LLNode*)malloc(sizeof(LLNode));
-	badSort(temp, output);
+    output =	badSort(temp, output);
 	
-	temp = root;
+	temp = output;
 	printf("list size is %d.\n", list_size);
 	while(temp!= NULL){
 		//printf("7\n");
