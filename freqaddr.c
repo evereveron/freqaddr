@@ -5,134 +5,152 @@
 
 
 /*NOTE ERROR MESSAGES SHOULD BE PRINTED TO stderr USING fprintf.*/
+/*FREE STUFF*/
 
-
-/*declare as global variable so no need to pass into functions*/
+/*
+Declared as global variable, so no need to pass into functions.
+*/
 int list_size = 0;
 
 
-
+/*
+Performs selection sort on a linked list.
+*/
 LLNode* badSort(LLNode *head, LLNode *nHead){
-	/*performs selection sort on a linked list*/
+
   
- LLNode *current;
-  LLNode *insert;
-  LLNode *temp;
-  LLNode *maxNode;
+	LLNode *current;
+	LLNode *insert;
+	LLNode *temp;
+	LLNode *maxNode;
 
-  int maxFreq = 0;
-  int size = 0;
-
-
+	int maxFreq = 0;
+	int size = 0;
 
 
-    current = NULL;
+    	current = NULL;
+    	insert = NULL;
+  	temp = head;
 
-    insert = NULL;
-  
-
-    temp = head;
-
-    maxNode = NULL;
+    	maxNode = NULL;
 
 
-  if(head == NULL){
-    return 0;
-
-  }
-  
+	if(head == NULL){
+    	
+		return 0;
+	}
  
-
-  while(size!= list_size){
-    
-    /* finds max frequency*/
-    
-    temp = head;
-    while(temp != NULL){
-
-      if(temp->freq > maxFreq && temp->skip != 1){
-       
-        maxNode = temp;
-        maxFreq = temp->freq;
-     }
-
-      temp = temp->next;
-
-
-      
-    }
-    maxFreq = 0;
-    maxNode->skip = 1;
-    
-
-    /*add new node
-
-    no list exists yet
+	/*
+	Finds max frequency.
 	*/
-    if(nHead->freq == 0){
-      insert = (LLNode*)malloc(sizeof(LLNode));
-        insert->freq = maxNode->freq;
-        insert->hex = maxNode->hex;
-        insert->line_num = maxNode->line_num;
-        insert->next = NULL;
-
-      size++;
-
-      nHead = insert;
+	while(size!= list_size){
     
-      current = nHead;
-    }
+    		temp = head;
+    		while(temp != NULL){
 
-    /*list already exists*/
-    else{
-      insert  = (LLNode*)malloc(sizeof(LLNode));
-        insert->freq = maxNode->freq;
-        insert->hex = maxNode->hex;
-        insert->line_num = maxNode->line_num;
-        insert->next = NULL;
+      			if(temp->freq > maxFreq && temp->skip != 1){
+       
+        			maxNode = temp;
+        			maxFreq = temp->freq;
+     			}
 
-      size++;
-
-      current->next = insert;
-      current = insert;
-    }
+      			temp = temp->next;
+      
+    		}
+    		
+		maxFreq = 0;
+    		maxNode->skip = 1;
     
 
-  }
+    		/*
+		Add new node.
+		No list exists yet.
+		*/
+    		if(nHead->freq == 0){
 
+      			insert = (LLNode*)malloc(sizeof(LLNode));
+        		insert->freq = maxNode->freq;
+        		insert->hex = maxNode->hex;
+        		insert->line_num = maxNode->line_num;
+        		insert->next = NULL;
 
-  return nHead;
+      			size++;
+
+      			nHead = insert;
+      			current = nHead;
+    		}
+
+    		/*
+		Add new node.
+		List already exists.
+		*/
+    		else{
+      			insert  = (LLNode*)malloc(sizeof(LLNode));
+        		insert->freq = maxNode->freq;
+        		insert->hex = maxNode->hex;
+        		insert->line_num = maxNode->line_num;
+        		insert->next = NULL;
+
+      			size++;
+
+      			current->next = insert;
+      			current = insert;
+    		}
+    
+
+	}
+
+	return nHead;
 }
 
-
+/* 
+Prints the linked list in "address: frequency" format. 
+Parameters it takes are numPrint (number of addresses to print) and *head, the root of the linked list.
+*/
 int printList(int numPrint, LLNode *head){
   
-  LLNode *temp;
-  
-  int count = 0;
-
+	LLNode *temp;  
+	int count = 0;
+	
+	/*
+	Error check if desired outputs exceeds number of distinct elements.
+	*/
+	if(numPrint>list_size){
+		fprintf(stderr, "Not enough addresses.\n");
+		return 0;
+	}
 
 	temp = head;
-  while(temp!=NULL){
+
+  	while(temp!=NULL){
     
-    if(numPrint == 0){ 
-      printf("0x%lx: %d\n", temp->hex, temp->freq);
-    }
-    else{
-      if(count < numPrint){
-        printf("0x%lx: %d\n", temp->hex, temp->freq);
-      }
-      else
-        break;
-    }
-    count++;
-    temp = temp->next;
-  }
+    		if(numPrint == 0){ 
+      		printf("0x%lx: %d\n", temp->hex, temp->freq);
+    		}
+
+    		else{
+      			if(count < numPrint){
+        		printf("0x%lx: %d\n", temp->hex, temp->freq);
+      			}
+      			else
+        			break;
+    		}
+
+    		count++;
+    		temp = temp->next;
+	}
 
 
-  return 0;
+	return 0;
 }
 
+
+/*
+The main method.
+It takes in 4 arguments- the program name (freqaddr), -n, the number of addresses to output, and a file name.
+The main method reads the addresses from the file and stores them in a linked list.
+The main method calls badSort and printList.
+*/
 int main(int argc, char* argv[]){
 	
 	
@@ -140,44 +158,37 @@ int main(int argc, char* argv[]){
 	FILE *fp;
 
 	int numPrint = strtol(argv[2], NULL, 10);
-
-	LLNode *root;
-
-
-	LLNode *current;
-
-	LLNode *temp;
-
 	int line = 1;
 
+	LLNode *root;
+	LLNode *current;
+	LLNode *temp;
 	LLNode *newNode;
-
 	LLNode *output;
 
+	
+	/*
+	Error check for when there are too many arguments.
+	*/
 	if(argv[4]!= 0){
+
 		fprintf(stderr, "Improperly formatted input arguments.\n");
 		return 0;
 
 	}
 
 	fp = fopen(argv[3], "r");
-	
-	  
-	
+
 	root = NULL;
-
-	
 	current = NULL;
-
+	newNode = NULL;
 	
 	temp = (LLNode*)malloc(sizeof(LLNode));
-
-	
-	newNode = NULL;
-
 	
 
-	
+	/*
+	Error check for when the file does not exist.
+	*/
 	if(fp == 0){
 		fprintf(stderr, "Error. Could not open file.\n");
 		return 0;
@@ -186,19 +197,21 @@ int main(int argc, char* argv[]){
 	else{
 		
 		/*
-     * scans the hexadecimal in the line into a size_t
-     * then add to or create a linked list
-    */
-
+     		Scans the hexadecimal in the line into an unsigned long,
+	     	and then adds to or creates a linked list.
+		*/
 		while(fscanf(fp, "%lx", &num) != EOF){
 			
 
-			/*the inner while loop iterates through the linked list
-			 and checks for repeats
+			/*
+			The inner while loop iterates through the linked list
+			and checks for repeats.
 			*/
 			while(temp != NULL){
 
-				/*if there is no root, create new linked list*/
+				/*
+				If there is no root, create new linked list.
+				*/
 				if(root == NULL){
 
 					root = (LLNode*)malloc(sizeof(LLNode));
@@ -212,13 +225,17 @@ int main(int argc, char* argv[]){
 					current = root;
 					temp = root;
 
-					/*increase line number tracker*/
+					/*
+					Increase line number tracker.
+					*/
 					line++;
 					list_size++;
 					break;
 				}
         
-			   	/*check to see if the hex already exists*/
+			   	/*
+				Check to see if the hex already exists.
+				*/
 				if(temp->hex == num){
 					
 					int frequency = temp->freq;
@@ -228,7 +245,9 @@ int main(int argc, char* argv[]){
 					break;
 				}
 
-				/*if at end of linked list, create a new node*/
+				/*
+				If at end of linked list, create a new node.
+				*/
 				if(temp->next == NULL){
 					
 					newNode = (LLNode*)malloc(sizeof(LLNode));
@@ -260,13 +279,18 @@ int main(int argc, char* argv[]){
 	}
 	
 	
-	/*sort the list*/
+	/*
+	Sort the list with badSort.
+	*/
 	temp = root;
 	
-		output = (LLNode*)malloc(sizeof(LLNode));
-    output =	badSort(temp, output);
-
-  printList(numPrint, output);
+	output = (LLNode*)malloc(sizeof(LLNode));
+    	output = badSort(temp, output);
+	
+	/*
+	Prints the list.
+	*/
+  	printList(numPrint, output);
 
 	
 	fclose(fp);
