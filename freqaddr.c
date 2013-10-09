@@ -59,6 +59,7 @@ int main(int argc, char* argv[]){
 					root->next = NULL;
 					current = root;
 					temp = root;
+					printf("root: %zx\n", temp->hex);
 
 					//increase line number tracker
 					line++;
@@ -71,6 +72,8 @@ int main(int argc, char* argv[]){
 					int frequency = temp->freq;
 					frequency++;
 					temp->freq = frequency;
+					
+					printf("freq: %zx: %d\n", temp->hex, temp->freq);
 					break;
 				}
 
@@ -87,6 +90,8 @@ int main(int argc, char* argv[]){
 					current->next = newNode;
 					line++;
 					current = newNode;
+					
+					printf("new node: %zx\n", current->hex);
 					
 					temp = root;
 					
@@ -110,8 +115,9 @@ int main(int argc, char* argv[]){
 	}
 	
   
+	fclose(fp);
 
-
-
+	return 0;
+	
 
 }
