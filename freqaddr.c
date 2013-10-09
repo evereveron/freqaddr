@@ -1,6 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<errno.h>
 #include "freqaddr.h"
+
+
+//NOTE ERROR MESSAGES SHOULD BE PRINTED TO stderr USING fprintf.
 
 int list_size = 0;
 
@@ -158,7 +162,7 @@ int listSort(LLNode *head){
 int main(int argc, char* argv[]){
 
 	if(argv[4]!= 0){
-		printf("Improperly formatted input arguments.");
+		fprintf(stderr, "Improperly formatted input arguments.\n");
 		return 0;
 
 	}
@@ -185,7 +189,7 @@ int main(int argc, char* argv[]){
 
 	
 	if(fp == 0){
-		printf("Could not open file.\n");
+		fprintf(stderr, "Error. Could not open file.\n");
 		return 0;
 	}
 
