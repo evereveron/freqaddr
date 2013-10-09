@@ -33,12 +33,15 @@ LLNode* badSort(LLNode *head, LLNode *nHead){
   while(size!= list_size){
     
     //finds max frequency
+    
+    temp = head;
     while(temp != NULL){
       
       printf("temp is %zx, maxfreq is %d. tempfreq is %d, and skip is %d.\n", temp->hex, maxFreq, temp->freq, temp->skip);
 
 
       if(temp->freq > maxFreq && temp->skip != 1){
+        printf("found a max\n");
         maxNode = temp;
         maxFreq = temp->freq;
      }
@@ -48,7 +51,7 @@ LLNode* badSort(LLNode *head, LLNode *nHead){
 
       
     }
-
+    maxFreq = 0;
     maxNode->skip = 1;
    // printf("maxNode is %zx. skip is %d.\n", maxNode->hex, maxNode->skip); 
     
@@ -85,6 +88,7 @@ LLNode* badSort(LLNode *head, LLNode *nHead){
       current->next = insert;
       current = insert;
     }
+    
 
   }
 
@@ -158,7 +162,7 @@ int main(int argc, char* argv[]){
 					
 					current = root;
 					temp = root;
-					printf("root: %zx\n", temp->hex);
+					//printf("root: %zx\n", temp->hex);
 
 					//increase line number tracker
 					line++;
