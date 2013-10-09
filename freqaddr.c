@@ -11,8 +11,12 @@ int badSort(LLNode *head, LLNode *nHead){
 	if(head == NULL){
 		return NULL;
 	}
+
 	LLNode *temp;
 		temp = head;
+		
+	LLNode *temp2;
+		temp2 = NULL;
 	LLNode *maxNode;
 		maxNode = NULL;
 	LLNode *maxPrev;
@@ -29,40 +33,50 @@ int badSort(LLNode *head, LLNode *nHead){
 	
 	int i;
 	while(temp != NULL){
-		temp = head;
-		
+
+		printf("1\n");
+		printf("temp is %zx.\n", temp->hex);
 		//resets variable to hold max
 		int maxFreq = 0;
 		
-		for(i=0; i<lSize; i++){
-			if(temp->next->freq > maxFreq){
-				maxFreq = temp->next->freq;
-				maxNode = temp->next;
-				maxPrev = temp;
+		temp2 = head;
+		while(temp2 != NULL){
+			printf("2\n");
+			if(temp2->next != NULL && temp2->next->freq > maxFreq){
+				maxFreq = temp2->next->freq;
+				maxNode = temp2->next;
+				maxPrev = temp2;
 			}
-			temp = temp->next;
+			temp2 = temp2->next;
 		}
-		
+		printf("3\n");
+		printf("max is %zx with %d.\n", maxNode->hex, maxFreq);
 		//adds max to new linked list.
 		//if no list exists, create one.
 		if(nHead->hex == NULL){
+			printf("4\n");
 			nHead = maxNode;
 			nHead->next = NULL;
 			current = nHead;
+			printf("4.5\n");
 		}
 		//new list does exist.
 		//add to end of new list.
 		//delete max node from old list.
+		printf("5\n");
 		else{
+			printf("6\n");
 			current->next = maxNode;
 			maxPrev->next = maxPrev->next->next;
 			current = maxNode;
 		}
-		
+		printf("7\n");
 		if(temp->next == NULL){
+			printf("8\n");
 			current->next = temp;
 			break;
 		}
+		temp = head;
 	}
 	return 0;
 }
