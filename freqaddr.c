@@ -5,95 +5,110 @@
 
 int main(int argc, char* argv[]){
 
-  if(argv[4]!= 0){
-    printf("Improperly formatted input arguments.");
-    return 0;
+	if(argv[4]!= 0){
+		printf("Improperly formatted input arguments.");
+		return 0;
 
-  }
+	}
 
-  size_t num;
-  FILE *fp;
-  fp = fopen(argv[3], "r");
+	size_t num;
+	FILE *fp;
+	fp = fopen(argv[3], "r");
+	
+	int numPrint = strtol(argv[2], NULL, 10);
+	  
+	LLNode *root;
+	root = NULL;
+
+	LLNode *current;
+	current = NULL;
+
+	LLNode *temp;
+	temp = NULL;
+
+	LLNode *newNode;
+	newNode = NULL;
+
+	int line = 1;
   
-  LLNode *root;
-    root = NULL;
-
-  LLNode *current;
-    current = NULL;
-
-  LLNode *temp;
-    temp = NULL;
-
-  LLNode *newNode;
-    newNode = NULL;
-
-  int line = 1;
+	if(fp == 0){
+		printf("Could not open file.\n");
+		return 0;
+	}
   
-  if(fp == 0){
-    printf("Could not open file.\n");
-    return 0;
+	else{
+		printf("1\n");
+		
+		//scans the hexadecimal in the line into a size_t
+		//then add to or create a linked list
+		while(fscanf(fp, "%zx", num) != EOF){
+			
+			printf("2\n");
+			//the inner while loop iterates through the linked list
+			//and checks for repeats
+			while(temp != NULL || root == NULL){
+				printf("3\n");
+				//if there is no root, create new linked list
+				if(root == NULL){
+					printf("4\n");
+					root = (LLNode*)malloc(sizeof(LLNode));
 
-  }
-  
-  else{
-    while(fscanf(fp, "%zx", num) != EOF){
-      //scans the hexadecimal in the line into a size_t
-      //then add to or create a linked list
-      //
-      //the inner while loop iterates through the linked list
-      //and checks for repeats
-      while(temp != NULL){
+					root->hex = num;
+					root->freq = 1;
+					root->line_num = line;
+					root->next = NULL;
+					current = root;
+					temp = root;
 
-        //if there is no root, create new linked list
-        if(root == NULL){
-          root = (LLNode*)malloc(sizeof(LLNode));
-
-          root->hex = num;
-          root->freq = 1;
-          root->line_num = line;
-          root->next = NULL;
-          current = root;
-
-         //increase line number tracker
-         line++;
-         break;
-        }
+					//increase line number tracker
+					line++;
+					break;
+				}
         
-        //check to see if the hex already exists
-        if(temp->hex == num){
-          int frequency = temp->freq;
-          frequency++;
-          temp->freq = frequency;
-          break;
-        }
+			   //check to see if the hex already exists
+				if(temp->hex == num){
+					printf("5\n");
+					int frequency = temp->freq;
+					frequency++;
+					temp->freq = frequency;
+					break;
+				}
 
-        //if at end of linked list, create a new node
-        if(temp->next == NULL){
-          
-          newNode = (LLNode*)malloc(sizeof(LLNode));
+				//if at end of linked list, create a new node
+				if(temp->next == NULL){
+					printf("1\n");
+					
+					newNode = (LLNode*)malloc(sizeof(LLNode));
 
-          newNode->hex = num;
-          newNode->freq = 1;
-          newNode->line_num = line;
-          newNode->next = NULL;
-          current->next = newNode;
-            line++;
-          current = newNode;
-        }
+					newNode->hex = num;
+					newNode->freq = 1;
+					newNode->line_num = line;
+					newNode->next = NULL;
+					current->next = newNode;
+					line++;
+					current = newNode;
+					
+					temp = root;
+					
+					break;
+				}
 
-      }
+			}
       
 
-    }
+		}
 
-  }
-
-  temp = root;
-
-  while(temp!= NULL){
-    printf("%zx: %d", temp->hex, temp->freq);
-
-  }
+	}
+	printf("6\n");
+	
+	temp = root;
+	
+	while(temp!= NULL){
+		printf("7\n");
+		printf("%zx: %d\n", temp->hex, temp->freq);
+		temp = temp->next;
+	}
+	
   
 
 
