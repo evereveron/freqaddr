@@ -24,29 +24,29 @@ int main(int argc, char* argv[]){
 	current = NULL;
 
 	LLNode *temp;
-	temp = NULL;
+	temp = (LLNode*)malloc(sizeof(LLNode));
 
 	LLNode *newNode;
 	newNode = NULL;
 
 	int line = 1;
-  
+	
 	if(fp == 0){
 		printf("Could not open file.\n");
 		return 0;
 	}
-  
+
 	else{
 		printf("1\n");
 		
 		//scans the hexadecimal in the line into a size_t
 		//then add to or create a linked list
-		while(fscanf(fp, "%zx", num) != EOF){
+		while(fscanf(fp, "%zx", &num) != EOF){
 			
 			printf("2\n");
 			//the inner while loop iterates through the linked list
 			//and checks for repeats
-			while(temp != NULL || root == NULL){
+			while(temp != NULL){
 				printf("3\n");
 				//if there is no root, create new linked list
 				if(root == NULL){
@@ -97,6 +97,8 @@ int main(int argc, char* argv[]){
 					
 					break;
 				}
+				
+				temp = temp->next;
 
 			}
       
@@ -114,7 +116,6 @@ int main(int argc, char* argv[]){
 		temp = temp->next;
 	}
 	
-  
 	fclose(fp);
 
 	return 0;
