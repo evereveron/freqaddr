@@ -6,6 +6,8 @@
 
 //NOTE ERROR MESSAGES SHOULD BE PRINTED TO stderr USING fprintf.
 
+
+//declare as global variable so no need to pass into functions
 int list_size = 0;
 
 
@@ -37,11 +39,11 @@ LLNode* badSort(LLNode *head, LLNode *nHead){
     temp = head;
     while(temp != NULL){
       
-      printf("temp is %zx, maxfreq is %d. tempfreq is %d, and skip is %d.\n", temp->hex, maxFreq, temp->freq, temp->skip);
+     // printf("temp is %zx, maxfreq is %d. tempfreq is %d, and skip is %d.\n", temp->hex, maxFreq, temp->freq, temp->skip);
 
 
       if(temp->freq > maxFreq && temp->skip != 1){
-        printf("found a max\n");
+       // printf("found a max\n");
         maxNode = temp;
         maxFreq = temp->freq;
      }
@@ -91,15 +93,44 @@ LLNode* badSort(LLNode *head, LLNode *nHead){
     
 
   }
-
+  
+  /*
   temp = nHead;
   while(temp != NULL){
     printf("%zx: %d.\n", temp->hex, temp->freq);
     temp = temp->next;
   }
+  */
 
 
   return nHead;
+}
+
+
+int printList(int numPrint, LLNode *head){
+  
+  LLNode *temp;
+  temp = head;
+  int count = 0;
+
+  while(temp!=NULL){
+    
+    if(numPrint == 0){ 
+      printf("0x%zx: %d\n", temp->hex, temp->freq);
+    }
+    else{
+      if(count < numPrint){
+        printf("0x%zx: %d\n", temp->hex, temp->freq);
+      }
+      else
+        break;
+    }
+    count++;
+    temp = temp->next;
+  }
+
+
+  return 0;
 }
 
 int main(int argc, char* argv[]){
@@ -198,7 +229,7 @@ int main(int argc, char* argv[]){
 					list_size++;
 					current = newNode;
 					
-					printf("new node: %zx\n", current->hex);
+					//printf("new node: %zx\n", current->hex);
 					
 					temp = root;
 					
@@ -221,7 +252,10 @@ int main(int argc, char* argv[]){
 	LLNode *output;
 		output = (LLNode*)malloc(sizeof(LLNode));
     output =	badSort(temp, output);
-	
+
+  printList(numPrint, output);
+
+  /*
 	temp = output;
 	printf("list size is %d.\n", list_size);
 	while(temp!= NULL){
@@ -229,6 +263,7 @@ int main(int argc, char* argv[]){
 		printf("0x%zx: %d.\n", temp->hex, temp->freq);
 		temp = temp->next;
 	}
+  */
 	
 	fclose(fp);
 
