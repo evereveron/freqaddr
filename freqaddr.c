@@ -37,20 +37,20 @@ int main(int argc, char* argv[]){
 	}
 
 	else{
-		printf("1\n");
+		//printf("1\n");
 		
 		//scans the hexadecimal in the line into a size_t
 		//then add to or create a linked list
 		while(fscanf(fp, "%zx", &num) != EOF){
 			
-			printf("2\n");
+			//printf("2\n");
 			//the inner while loop iterates through the linked list
 			//and checks for repeats
 			while(temp != NULL){
-				printf("3\n");
+				//printf("3\n");
 				//if there is no root, create new linked list
 				if(root == NULL){
-					printf("4\n");
+					//printf("4\n");
 					root = (LLNode*)malloc(sizeof(LLNode));
 
 					root->hex = num;
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
         
 			   //check to see if the hex already exists
 				if(temp->hex == num){
-					printf("5\n");
+					//printf("5\n");
 					int frequency = temp->freq;
 					frequency++;
 					temp->freq = frequency;
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]){
 
 				//if at end of linked list, create a new node
 				if(temp->next == NULL){
-					printf("1\n");
+					//printf("1\n");
 					
 					newNode = (LLNode*)malloc(sizeof(LLNode));
 
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]){
 		}
 
 	}
-	printf("6\n");
+	//printf("6\n");
 	
 	temp = root;
 	
