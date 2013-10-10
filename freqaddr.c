@@ -125,12 +125,12 @@ int printList(int numPrint, LLNode *head){
   	while(temp!=NULL){
     
     		if(numPrint == 0){ 
-      		printf("0x%lx: %d\n", temp->hex, temp->freq);
+      		printf("0x%lx :%d\n", temp->hex, temp->freq);
     		}
 
     		else{
       			if(count < numPrint){
-        		printf("0x%lx: %d\n", temp->hex, temp->freq);
+        		printf("0x%lx :%d\n", temp->hex, temp->freq);
       			}
       			else
         			break;
@@ -236,19 +236,19 @@ int main(int argc, char* argv[]){
 			   	/*
 				Check to see if the hex already exists.
 				*/
-				if(temp->hex == num){
+				else if(temp->hex == num){
 					
 					int frequency = temp->freq;
 					frequency++;
 					temp->freq = frequency;
-					
+					temp = root;
 					break;
 				}
 
 				/*
 				If at end of linked list, create a new node.
 				*/
-				if(temp->next == NULL){
+				else if(temp->next == NULL && temp->hex != num){
 					
 					newNode = (LLNode*)malloc(sizeof(LLNode));
 
@@ -269,7 +269,8 @@ int main(int argc, char* argv[]){
 					break;
 				}
 				
-				temp = temp->next;
+				else 
+					temp = temp->next;
 
 			}
       
