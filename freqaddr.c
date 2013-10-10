@@ -144,6 +144,13 @@ int printList(int numPrint, LLNode *head){
 	return 0;
 }
 
+void recurseFree(LLNode *root){
+	if(root != NULL){
+		recurseFree(root->next);
+	}
+	free(root);
+
+}
 
 /*
 The main method.
@@ -292,6 +299,13 @@ int main(int argc, char* argv[]){
 	Prints the list.
 	*/
   	printList(numPrint, output);
+	
+
+	/*
+	Frees memory.
+	*/
+	recurseFree(root);
+	recurseFree(output);
 
 	
 	fclose(fp);
